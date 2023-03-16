@@ -1,4 +1,6 @@
+package JAVAFD.treesearch;
 import java.util.*;
+
 import JAVAFD.Treefarm.TreeNode;
 
 public class MainTreeSrc {
@@ -58,11 +60,17 @@ public class MainTreeSrc {
             if(menu_num == 1) {
                 System.out.println("-------------------------------------");
                 System.out.println("노드를 추가합니다.");
+                System.out.println("노드의 값은 0 이 될수 없습니다.");
                 System.out.println("문자입력시 강제종료됩니다. 제발...");
                 if(nodes[0].getData() == null) {
                     System.out.print("루트노드의 입력할 값을 입력해주세요 : ");
                     try{
-                        nodes[0].putData(scan_chose.nextInt());
+                        int imScanNum = scan_chose.nextInt();
+                        if( imScanNum == 0) {
+                            System.out.println("SORRY. 노드값은 0이 안된다구요!");
+                            flag = 0;
+                        }
+                        nodes[0].putData(imScanNum);
                     }catch(InputMismatchException e){
                         scan_chose.nextLine();
                         System.out.println("GET OUT .............");
@@ -73,9 +81,14 @@ public class MainTreeSrc {
                     for(int i = 0; i <= node_len; i++) {
                         if(nodes[i].getData() == null){
                             try{
-                                System.out.println("현재 노드번호는 " + nodeCount + "이고, 전체 노드는 " + node_len + "입니다.");
+                                System.out.println("현재 노드번호는 " + nodeCount + "이고, 전체 노드는 "
+                                 + node_len + "입니다.");
                                 System.out.println("노드에 입력할 값을 입력해주세요 : ");
                                 int urNodeVal = scan_chose.nextInt();
+                                if( urNodeVal == 0) {
+                                    System.out.println("노드값은 0이... 안되....요..........");
+                                    flag = 0;
+                                }
                                 nodes[nodeCount].putData(urNodeVal);
                                 nodes[0].Calculation(nodes[nodeCount], nodes[0]);
                                 nodeCount = nodeCount + 1;
@@ -124,7 +137,31 @@ public class MainTreeSrc {
                     System.out.println("메뉴로 돌아갑니다. \r\n");
                     flag = 0;
                 }else{
-
+                    Random r = new Random();
+                    int ranNumber = r.nextInt()+node_len+1;
+                    TreeNode delNodes = new TreeNode(ranNumber);
+                    delNodes.putData(nodes[NodeRVal].getData());
+                    delNodes.makeRightSubTree(nodes[NodeRVal].getRightSubTree());
+                    delNodes.makeLeftsubTree(nodes[NodeRVal].getLeftSubTree());
+                    delNodes.makeUpSubTree(nodes[NodeRVal].getUpSubTree());
+                    int thisNodeVl = (int)nodes[NodeRVal].getData();
+                    int upsNodeVl = (int)nodes[NodeRVal].getUpSubTree().getData();
+                    int leftNodeVl = (int)nodes[NodeRVal].getLeftSubTree().getData();
+                    int rightNodeVl = (int)nodes[NodeRVal].getRightSubTree().getData();
+                    if(upsNodeVl == leftNodeVl){
+                        System.out.println("자식 노드의 값이 중복되어서 사용이 불가능합니다.");
+                        flag = 0;
+                    }else if(upsNodeVl == rightNodeVl) {
+                        System.out.println("자식 노드의 값이 중복되어서 사용이 불가능합니다.");
+                        flag = 0;
+                    }else{
+                        nodes[NodeRVal].getRightSubTree().makeUpSubTree(nodes[NodeRVal].getUpSubTree());
+                        if(nodes[NodeRVal].getLeftSubTree()  == null){
+                            nodes[NodeRVal].getRightSubTree().changeLeftsubTree(nodes[NodeRVal].getLeftSubTree());
+                        }else{
+                            
+                        }
+                    }
                 }
             }
         }while(flag==0);
