@@ -1,3 +1,5 @@
+package JAVAFD.Treefarm;
+
 import java.util.InputMismatchException;
 
 public class TreeNode {
@@ -28,6 +30,16 @@ public class TreeNode {
         }
     }
 
+    public void makeSortTree(TreeNode sub1, TreeNode sub2, TreeNode sub3){ //기준은 sub1, 기존값은 sub2, 신규로바꿀값sub3
+        if(sub3.getLeftSubTree() == null) {
+            
+        }else if(sub3.getRightSubTree() == null) {
+
+        }else{
+
+        }
+    }
+    
     public int SearchingSubTree (Object item, TreeNode sub) {
         int searh_Val = (int)item;
         int node_Val = (int)sub.getData();
@@ -42,6 +54,12 @@ public class TreeNode {
             this.SearchingSubTree(item, this.getRightSubTree());
         }
         return final_Val;
+    }
+    public void changeLeftsubTree(TreeNode sub) {
+        this.left = sub;
+    }
+    public void changeRightsubTree(TreeNode sub) {
+        this.right = sub;
     }
     public void makeLeftsubTree(TreeNode sub) {
         if (this.left == null) {
