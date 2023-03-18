@@ -1,7 +1,5 @@
 package JAVAFD.Treefarm;
 
-import java.util.InputMismatchException;
-
 public class TreeNode {
     public static Object getData;
     private TreeNode left;
@@ -30,17 +28,42 @@ public class TreeNode {
         }
     }
 
-    public void makeSortTree(TreeNode sub1, TreeNode sub2, TreeNode sub3){ //기준은 sub1, 기존값은 sub2, 신규로바꿀값sub3
+    public void makeSortTree(TreeNode sub1, TreeNode sub2, TreeNode sub3, TreeNode sub4, Object sub4_Num){ //sub1을 기준으로 삭제할 부모노드가  sub2. sub1의 왼쪽노드를 sub3
         if(sub3.getLeftSubTree() == null) {
-            
-        }else if(sub3.getRightSubTree() == null) {
+            if(sub2.getLeftSubTree() == null) {
+                sub1.makeUpSubTree(sub2.getUpSubTree());
+                sub2.delAllThisTree();
+            }else{
+                //TreeNode[] waitnodes = new TreeNode[(int)sub4_Num];   sub4->waitnodes[sub_Num]
+                sub4 = new TreeNode(0); //빈노드 생성후 대입할 정보들 삽입
 
-        }else{
+                sub4.makeLeftsubTree(sub2.getLeftSubTree().getLeftSubTree());
+                sub4.makeRightSubTree(sub2.getLeftSubTree().getRightSubTree());
+                sub4.putData(sub2.getLeftSubTree().getData());
 
+                sub2.getLeftSubTree().delAllThisTree(); //노드의모든값 제거
+                sub2.getLeftSubTree().putData(sub4.getData());  // data값만 노드에 추가
+
+
+                sub3.Calculation(sub2.getLeftSubTree(), sub3);
+
+                if(sub4.getRightSubTree() != null && sub4.getLeftSubTree() != null){    //여기서부터시작
+                    
+                    
+                }
+                
+            }
         }
     }
     
-    public int SearchingSubTree (Object item, TreeNode sub) {
+
+    public void delAllThisTree() {  //모든값 제거
+        this.left = null;
+        this.right = null;
+        this.data = null;
+        this.upnode = null;
+    }
+    public int SearchingSubTree (Object item, TreeNode sub) {   //item value를 탐색한다.
         int searh_Val = (int)item;
         int node_Val = (int)sub.getData();
         int final_Val = 0;
@@ -55,12 +78,14 @@ public class TreeNode {
         }
         return final_Val;
     }
+
     public void changeLeftsubTree(TreeNode sub) {
         this.left = sub;
     }
     public void changeRightsubTree(TreeNode sub) {
         this.right = sub;
     }
+
     public void makeLeftsubTree(TreeNode sub) {
         if (this.left == null) {
             this.left = sub;
