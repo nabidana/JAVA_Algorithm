@@ -28,12 +28,17 @@ public class TreeNode {
         }
     }
 
-    public void makeSortTree(TreeNode sub1, TreeNode sub2, TreeNode sub3, TreeNode sub4, Object sub4_Num){ //sub1을 기준으로 삭제할 부모노드가  sub2. sub1의 왼쪽노드를 sub3
+    public void makeSortTree(TreeNode sub1, TreeNode sub2, TreeNode sub3, TreeNode sub4, Object sub4_Num){ //sub1을 기준으로 삭제할 노드(부모)가  sub2. sub1의 왼쪽노드를 sub3
         if(sub3.getLeftSubTree() == null) {
             if(sub2.getLeftSubTree() == null) {
                 sub1.makeUpSubTree(sub2.getUpSubTree());
                 sub2.delAllThisTree();
             }else{
+                sub2.getLeftSubTree().makeUpSubTree(sub3);
+
+                sub2.delAllThisTree();
+
+                //여기부터 주석된것은 다른곳에서 사용하기
                 //TreeNode[] waitnodes = new TreeNode[(int)sub4_Num];   sub4->waitnodes[sub_Num]
                 sub4 = new TreeNode(0); //빈노드 생성후 대입할 정보들 삽입
 
@@ -47,11 +52,10 @@ public class TreeNode {
 
                 sub3.Calculation(sub2.getLeftSubTree(), sub3);
 
-                if(sub4.getRightSubTree() != null && sub4.getLeftSubTree() != null){    //여기서부터시작
+                if(sub4.getRightSubTree() != null && sub4.getLeftSubTree() != null){
+                    sub2.makeSortTree(sub2.getLeftSubTree(), sub2, sub3, sub4, sub4_Num);
                     
-                    
-                }
-                
+                }                
             }
         }
     }
